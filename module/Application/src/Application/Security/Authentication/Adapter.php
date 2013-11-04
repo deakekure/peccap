@@ -65,7 +65,7 @@ class Adapter implements AdapterInterface {
 			return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null);
 		}
 		
-		if($this->password === $user->getPassword()) {
+		if(md5($this->password) === $user->getPassword()) {
 			$availableRoles = array();
 			
 			/* @var $userRole UserRole */

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 04, 2013 at 06:41 PM
+-- Generation Time: Nov 05, 2013 at 02:31 AM
 -- Server version: 5.5.34-0ubuntu0.13.10.1
 -- PHP Version: 5.5.3-1ubuntu2
 
@@ -350,8 +350,8 @@ CREATE TABLE IF NOT EXISTS `peccap_user` (
 --
 
 INSERT INTO `peccap_user` (`id`, `full_name`, `login_user_name`, `login_password`) VALUES
-(1, 'Administrator', 'administrator', 'administrator'),
-(2, 'Developer', 'developer', 'developer');
+(1, 'Administrator', 'administrator', '200ceb26807d6bf99fd6f4f0d1ca54d4'),
+(2, 'Developer', 'developer', '5e8edd851d2fdfbd7415232c67367cc3');
 
 -- --------------------------------------------------------
 
@@ -387,18 +387,18 @@ INSERT INTO `peccap_user_role_map` (`user_id`, `role_id`, `active_status`, `star
 -- Constraints for table `peccap_expenditure`
 --
 ALTER TABLE `peccap_expenditure`
-  ADD CONSTRAINT `FK_69F6CFC9620B0F8D` FOREIGN KEY (`annual_period`) REFERENCES `peccap_annual_period` (`year`),
   ADD CONSTRAINT `FK_69F6CFC9115F0EE5` FOREIGN KEY (`domain_id`) REFERENCES `peccap_expenditure_domain` (`id`),
   ADD CONSTRAINT `FK_69F6CFC912469DE2` FOREIGN KEY (`category_id`) REFERENCES `peccap_expenditure_category` (`id`),
+  ADD CONSTRAINT `FK_69F6CFC9620B0F8D` FOREIGN KEY (`annual_period`) REFERENCES `peccap_annual_period` (`year`),
   ADD CONSTRAINT `FK_69F6CFC973F74AD4` FOREIGN KEY (`territory_id`) REFERENCES `peccap_territory` (`id`);
 
 --
 -- Constraints for table `peccap_income`
 --
 ALTER TABLE `peccap_income`
-  ADD CONSTRAINT `FK_4A28300E73F74AD4` FOREIGN KEY (`territory_id`) REFERENCES `peccap_territory` (`id`),
   ADD CONSTRAINT `FK_4A28300E5FA9FB05` FOREIGN KEY (`source_name`) REFERENCES `peccap_income_source` (`name`),
-  ADD CONSTRAINT `FK_4A28300E620B0F8D` FOREIGN KEY (`annual_period`) REFERENCES `peccap_annual_period` (`year`);
+  ADD CONSTRAINT `FK_4A28300E620B0F8D` FOREIGN KEY (`annual_period`) REFERENCES `peccap_annual_period` (`year`),
+  ADD CONSTRAINT `FK_4A28300E73F74AD4` FOREIGN KEY (`territory_id`) REFERENCES `peccap_territory` (`id`);
 
 --
 -- Constraints for table `peccap_population`
@@ -417,8 +417,8 @@ ALTER TABLE `peccap_report_template`
 -- Constraints for table `peccap_report_template_annual_period`
 --
 ALTER TABLE `peccap_report_template_annual_period`
-  ADD CONSTRAINT `FK_E632725B620B0F8D` FOREIGN KEY (`annual_period`) REFERENCES `peccap_annual_period` (`year`),
-  ADD CONSTRAINT `FK_E632725B5DA0FB8` FOREIGN KEY (`template_id`) REFERENCES `peccap_report_template` (`id`);
+  ADD CONSTRAINT `FK_E632725B5DA0FB8` FOREIGN KEY (`template_id`) REFERENCES `peccap_report_template` (`id`),
+  ADD CONSTRAINT `FK_E632725B620B0F8D` FOREIGN KEY (`annual_period`) REFERENCES `peccap_annual_period` (`year`);
 
 --
 -- Constraints for table `peccap_report_template_category`
@@ -438,15 +438,15 @@ ALTER TABLE `peccap_report_template_domain`
 -- Constraints for table `peccap_report_template_source`
 --
 ALTER TABLE `peccap_report_template_source`
-  ADD CONSTRAINT `FK_CC175141953C1C61` FOREIGN KEY (`source_id`) REFERENCES `peccap_income_source` (`name`),
-  ADD CONSTRAINT `FK_CC1751415DA0FB8` FOREIGN KEY (`template_id`) REFERENCES `peccap_report_template` (`id`);
+  ADD CONSTRAINT `FK_CC1751415DA0FB8` FOREIGN KEY (`template_id`) REFERENCES `peccap_report_template` (`id`),
+  ADD CONSTRAINT `FK_CC175141953C1C61` FOREIGN KEY (`source_id`) REFERENCES `peccap_income_source` (`name`);
 
 --
 -- Constraints for table `peccap_report_template_territory`
 --
 ALTER TABLE `peccap_report_template_territory`
-  ADD CONSTRAINT `FK_4B22EEDE73F74AD4` FOREIGN KEY (`territory_id`) REFERENCES `peccap_territory` (`id`),
-  ADD CONSTRAINT `FK_4B22EEDE5DA0FB8` FOREIGN KEY (`template_id`) REFERENCES `peccap_report_template` (`id`);
+  ADD CONSTRAINT `FK_4B22EEDE5DA0FB8` FOREIGN KEY (`template_id`) REFERENCES `peccap_report_template` (`id`),
+  ADD CONSTRAINT `FK_4B22EEDE73F74AD4` FOREIGN KEY (`territory_id`) REFERENCES `peccap_territory` (`id`);
 
 --
 -- Constraints for table `peccap_territory`
@@ -458,8 +458,8 @@ ALTER TABLE `peccap_territory`
 -- Constraints for table `peccap_user_role_map`
 --
 ALTER TABLE `peccap_user_role_map`
-  ADD CONSTRAINT `FK_90FFFB11D60322AC` FOREIGN KEY (`role_id`) REFERENCES `peccap_role` (`id`),
-  ADD CONSTRAINT `FK_90FFFB11A76ED395` FOREIGN KEY (`user_id`) REFERENCES `peccap_user` (`id`);
+  ADD CONSTRAINT `FK_90FFFB11A76ED395` FOREIGN KEY (`user_id`) REFERENCES `peccap_user` (`id`),
+  ADD CONSTRAINT `FK_90FFFB11D60322AC` FOREIGN KEY (`role_id`) REFERENCES `peccap_role` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

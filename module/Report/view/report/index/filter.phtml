@@ -9,11 +9,14 @@ $filterForm = $this->filterForm;
 $filterForm->prepare();
 echo $this->form()->openTag($filterForm);
 ?>
+	<div class="page-header">
+		<h1>Filter Laporan</h1>
+	</div>
 	<div class="row">
 		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th style="width: 25px;"><input type="checkbox" value="" /></th>
@@ -35,7 +38,7 @@ echo $this->form()->openTag($filterForm);
 		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th style="width: 25px;"><input type="checkbox" value="" /></th>
@@ -57,7 +60,7 @@ echo $this->form()->openTag($filterForm);
 		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th style="width: 25px;"><input type="checkbox" value=""></th>
@@ -77,7 +80,7 @@ echo $this->form()->openTag($filterForm);
 			</div>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th style="width: 25px;"><input type="checkbox" value="" /></th>
@@ -99,11 +102,11 @@ echo $this->form()->openTag($filterForm);
 		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th style="width: 25px;"><input type="checkbox" value=""></th>
-								<th>Jenis Penerimaan</th>
+								<th>Sumber Penerimaan</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -119,9 +122,10 @@ echo $this->form()->openTag($filterForm);
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div>
 		<div class="form-group">
 			<?php echo $this->formElement($filterForm->get('submit')) ?>
+			<?php echo $this->formElement($filterForm->get('reset')) ?>
 		</div>
 	</div>
 <?php 

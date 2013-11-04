@@ -22,6 +22,14 @@ class ParameterFilter extends Form {
 			'type' => 'submit',
 			'attributes' => array(
 				'value' => 'Lihat',
+				'class' => 'btn btn-info'
+			)
+		));
+		$this->add(array(
+			'name' => 'reset',
+			'type' => 'submit',
+			'attributes' => array(
+				'value' => 'Reset',
 				'class' => 'btn btn-default'
 			)
 		));

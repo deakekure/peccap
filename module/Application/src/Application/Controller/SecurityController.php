@@ -30,7 +30,7 @@ class SecurityController extends AbstractActionController {
 				
 				$authenticationResult = $authenticationService->authenticate();
 				if($authenticationResult->isValid()) {
-					$this->redirect()->toRoute('home');
+					$this->redirect()->toRoute('report');
 				}
 			}
 		}
@@ -44,7 +44,7 @@ class SecurityController extends AbstractActionController {
 		if($this->getAuthenticationService()->hasIdentity()) {
 			$this->getAuthenticationService()->clearIdentity();
 		}
-		$this->redirect()->toRoute('home');
+		$this->redirect()->toRoute('report');
 	}
 	
 	/**
