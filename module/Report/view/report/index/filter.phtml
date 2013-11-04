@@ -1,5 +1,6 @@
 <?php 
 use Zend\Form\Form;
+use Zend\Form\Element;
 	
 $this->headTitle('Expenditure');
 	
@@ -20,10 +21,32 @@ echo $this->form()->openTag($filterForm);
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($filterForm->get('expenditure')->get('territorySelections')->getIterator() as $territorySelectionFieldset) : ?>
+							<?php foreach ($filterForm->get('parameter')->get('territorySelections')->getIterator() as $territorySelectionFieldset) : ?>
 							<tr>
 								<td><?php echo $this->formCheckbox($territorySelectionFieldset->get('selection'))?></td>
 								<td><?php echo $territorySelectionFieldset->get('territory')->getValue()?></td>
+							</tr>
+							<?php endforeach;?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="width: 25px;"><input type="checkbox" value="" /></th>
+								<th>Tahun Anggaran</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($filterForm->get('parameter')->get('annualPeriodSelections')->getIterator() as $annualPeriodSelectionFieldset) : ?>
+							<tr>
+								<td><?php echo $this->formCheckbox($annualPeriodSelectionFieldset->get('selection'))?></td>
+								<td><?php echo $annualPeriodSelectionFieldset->get('annualPeriod')->getValue()?></td>
 							</tr>
 							<?php endforeach;?>
 						</tbody>
@@ -42,7 +65,7 @@ echo $this->form()->openTag($filterForm);
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($filterForm->get('expenditure')->get('domainSelections')->getIterator() as $domainSelectionFieldset) : ?>
+							<?php foreach ($filterForm->get('parameter')->get('domainSelections')->getIterator() as $domainSelectionFieldset) : ?>
 							<tr>
 								<td><?php echo $this->formCheckbox($domainSelectionFieldset->get('selection'))?></td>
 								<td><?php echo $domainSelectionFieldset->get('domain')->getValue()->getName()?></td>
@@ -52,8 +75,6 @@ echo $this->form()->openTag($filterForm);
 					</table>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<table class="table">
@@ -64,7 +85,7 @@ echo $this->form()->openTag($filterForm);
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($filterForm->get('expenditure')->get('categorySelections')->getIterator() as $categorySelectionFieldset) : ?>
+							<?php foreach ($filterForm->get('parameter')->get('categorySelections')->getIterator() as $categorySelectionFieldset) : ?>
 							<tr>
 								<td><?php echo $this->formCheckbox($categorySelectionFieldset->get('selection'))?></td>
 								<td><?php echo $categorySelectionFieldset->get('category')->getValue()->getDescription()?></td>
@@ -81,30 +102,28 @@ echo $this->form()->openTag($filterForm);
 					<table class="table">
 						<thead>
 							<tr>
-								<th style="width: 25px;"><input type="checkbox" value="" /></th>
-								<th>Tahun Anggaran</th>
+								<th style="width: 25px;"><input type="checkbox" value=""></th>
+								<th>Jenis Penerimaan</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($filterForm->get('expenditure')->get('annualPeriodSelections')->getIterator() as $annualPeriodSelectionFieldset) : ?>
+							<?php foreach ($filterForm->get('parameter')->get('sourceSelections')->getIterator() as $sourceSelectionFieldset) : ?>
 							<tr>
-								<td><?php echo $this->formCheckbox($annualPeriodSelectionFieldset->get('selection'))?></td>
-								<td><?php echo $annualPeriodSelectionFieldset->get('annualPeriod')->getValue()?></td>
+								<td><?php echo $this->formCheckbox($sourceSelectionFieldset->get('selection'))?></td>
+								<td><?php echo $sourceSelectionFieldset->get('source')->getValue()->getDescription()?></td>
 							</tr>
-							<?php endforeach;?>
+							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="form-group">
+			<?php echo $this->formElement($filterForm->get('submit')) ?>
+		</div>
+	</div>
 <?php 
 echo $this->form()->closeTag();
 ?>
-  
-<div id="chart1div" align="center">The chart will appear within this DIV. This text will be replaced by the chart.</div>
-<script type="text/javascript">
-	var myChart1 = new FusionCharts("<?php echo $this->basePath() . '/charts/Column3D.swf'?>", "myChart1Id", "900", "300", "0", "0");
-	myChart1.setDataURL("<?php echo $this->url('report/expenditure', array('action' => 'datas')) ?>");
-	myChart1.render("chart1div");
-</script>

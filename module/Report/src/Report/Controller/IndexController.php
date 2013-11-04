@@ -2,6 +2,8 @@
 namespace Report\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Doctrine\ORM\EntityManager;
+use Report\Form\Object\ParameterFilter as ParameterFilterObject;
 
 /**
  * Controller utama dari modul reporting.
@@ -40,17 +42,18 @@ class IndexController extends AbstractActionController {
 	 */
 	public function filterAction() {
 		/* @var $filterForm ExpenditureFilterForm */
-		$filterForm = $this->serviceLocator->get('FormElementManager')->get('Report\Form\ExpenditureFilter');
+		$filterForm = $this->serviceLocator->get('FormElementManager')->get('ParameterFilter');
 		
 		/* @var $entityManager EntityManager */
 		$entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
 		
 		$territories = $entityManager->getRepository('Application\Entity\Territory')->findAll();
+		$annualPeriods = $entityManager->getRepository('Application\Entity\AnnualPeriod')->findAll();
 		$domains = $entityManager->getRepository('Expenditure\Entity\Domain')->findAll();
 		$categories = $entityManager->getRepository('Expenditure\Entity\Category')->findAll();
-		$annualPerriods = $entityManager->getRepository('Application\Entity\AnnualPeriod')->findAll();
+		$sources = $entityManager->getRepository('Income\Entity\Source')->findAll();
 		
-		$filterObject = new ExpenditureFilterObject($territories, $domains, $categories, $annualPerriods);
+		$filterObject = new ParameterFilterObject($territories, $annualPeriods, $domains, $categories, $sources);
 		$filterForm->bind($filterObject);
 		
 		if($this->request->isPost()) {

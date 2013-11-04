@@ -21,7 +21,8 @@ class ParameterFilter extends Form {
 			'name' => 'submit',
 			'type' => 'submit',
 			'attributes' => array(
-				'value' => 'Lihat'
+				'value' => 'Lihat',
+				'class' => 'btn btn-default'
 			)
 		));
 	}
