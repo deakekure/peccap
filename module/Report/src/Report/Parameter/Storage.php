@@ -1,6 +1,8 @@
 <?php
 namespace Report\Parameter;
 
+use Zend\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
+use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;
 use Zend\Session\Container as SessionContainer;
 use Report\Contract\Parameter;
 
@@ -9,7 +11,7 @@ use Report\Contract\Parameter;
  * 
  * @author zakyalvan
  */
-class Storage implements StorageInterface {
+class Storage implements StorageInterface, ServiceLocatorAware {
 	/**
 	 * @var Container
 	 */
@@ -40,6 +42,11 @@ class Storage implements StorageInterface {
 	 */
 	private $converter;
 	
+	/**
+	 * @var ServiceLocator
+	 */
+	private $serviceLocator;
+	
 	public function __construct(ConverterInterface $converter) {
 		$this->sessionContainer = new SessionContainer($this->storageNamespace);
 		$this->converter = $converter;
@@ -51,8 +58,11 @@ class Storage implements StorageInterface {
 	 */
 	public function getDefault() {
 		if($this->defaultParameter === null) {
-			$defaultParameter = new Parameter();
-			$this->defaultParameter = $defaultParameter;
+			$parameter = new Parameter();
+			
+			
+			
+			$this->defaultParameter = $parameter;
 		}
 		return $this->defaultParameter;
 	}
@@ -96,5 +106,19 @@ class Storage implements StorageInterface {
 	public function reset() {
 		unset($this->sessionContainer->{$this->storageKey});
 		$this->cachedParameter = null;
+	}
+	/**
+	 * (non-PHPdoc)
+	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
+	 */
+	public function setServiceLocator(ServiceLocator $serviceLocator) {
+		$this->serviceLocator = $serviceLocator;
+	}
+	/**
+	 * (non-PHPdoc)
+	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
+	 */
+	public function getServiceLocator() {
+		return $this->serviceLocator;
 	}
 }

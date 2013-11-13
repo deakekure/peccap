@@ -44,13 +44,18 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 		if($parameterConverter instanceof ServiceLocatorAwareInterface) {
 			$parameterConverter->setServiceLocator($this->getServiceLocator());
 		}
-		$this->parameterStorage = new ParameterStorage($parameterConverter);
+		
+		$parameterStorage = new ParameterStorage($parameterConverter);
+		if($parameterStorage instanceof  ServiceLocatorAwareInterface) {
+			$parameterStorage->setServiceLocator($this->getServiceLocator());
+		}
 		
 		// Create default parameter jika parameter dalam storage kosong.
-		if($this->parameterStorage->isEmpty()) {
-			$defaultParameter = $this->parameterStorage->getDefault();
-			$this->parameterStorage->write($defaultParameter);
+		if($parameterStorage->isEmpty()) {
+			$parameterStorage->write($parameterStorage->getDefault());
 		}
+		
+		$this->parameterStorage = $parameterStorage;
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 <?php
 namespace Report\Contract;
 
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Kontrak untuk kelas yang menyediakan data untuk report.
  * Interface ini untuk memungkinkan generate data report on demand.
@@ -19,7 +20,7 @@ interface DataProviderInterface {
 	 * Retrieve data.
 	 * 
 	 * @throws DataProviderException
-	 * @return DataInterface
+	 * @return ArrayCollection
 	 */
-	public function getData();
+	public function getDatas();
 }

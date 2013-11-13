@@ -6,6 +6,8 @@ use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
+use Report\Contract\Exception\GeneratorException;
 
 /**
  * Abstract report generator.
@@ -14,7 +16,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 abstract class AbstractGenerator implements GeneratorInterface, DataProviderInterface, ServiceLocatorAware {
 	/**
-	 * Id generator.
+	 * Id dari generator.
 	 * 
 	 * @var string
 	 */
@@ -39,9 +41,8 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	 */
 	protected $serviceLocator;
 	
-	public function __construct($id, $dataClass) {
+	public function __construct($id) {
 		$this->id = $id;
-		$this->dataClass = $dataClass;
 	}
 	
 	/**
@@ -73,9 +74,22 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 		/* @var $entityManager EntityManager */ 
 		$entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
 		
-		$this->dataQuery = $this->buildDataQuery($parameter, $entityManager);
+		$dataQuery = $this->buildDataQuery($parameter, $entityManager);
+		if($dataQuery instanceof QueryBuilder) {
+			$this->dataQuery = $dataQuery->getQuery();
+		}
+		else if($dataQuery instanceof Query) {
+			$this->dataQuery = $dataQuery;
+		}
+		else {
+			throw new GeneratorException(
+				sprintf('Object data-query bukan instance dari %s atau %s', 'Doctrine\ORM\Query', 'Doctrine\ORM\QueryBuilder'), 
+				100,
+				null
+			);
+		}
 		
-		$report = new Report($this->dataClass);
+		$report = new Report($this->getDataClass());
 		$report->setDataProvider($this);
 		return $report;
 	}
@@ -87,11 +101,21 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	public function getDataClass() {
 		return $this->dataClass;
 	}
+	
+	/**
+	 * Create data object untuk masing-masing item data (Jika bukan instance dari DataInterface).
+	 * Jika data object t
+	 *
+	 * @param Object $object
+	 * @return DataInterface
+	 */
+	abstract protected function createDataObject($object);
+	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\Contract\DataProviderInterface::getData()
+	 * @see \Report\Contract\DataProviderInterface::getDatas()
 	 */
-	public function getData() {
+	public function getDatas() {
 		if(!$this->dataQuery) {
 			throw new DataProviderException(
 				sprintf('Data provider error, object data-query belum disediakan.'), 
@@ -101,7 +125,17 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 		}
 		
 		try {
-			return $this->dataQuery->getSingleResult();
+			$datas = $this->dataQuery->getResult();
+			
+			$dataCollection = new ArrayCollection();
+			foreach ($datas as $data) {
+				$dataObject = $data;
+				if(get_class($data) !== $this->getDataClass()) {
+					$dataObject = $this->createDataObject($data);
+				}
+				$dataCollection->add($dataObject);
+			}
+			return $dataCollection;
 		}
 		catch(\Exception $e) {
 			throw new DataProviderException(

@@ -40,9 +40,12 @@ class Chart implements StrategyInterface {
 		return $this->chartType;
 	}
 	
-	public function getChartData() {
-		$data = $this->dataProvider->getData();
+	public function getChartDatas() {
+		$datas = $this->dataProvider->getDatas();
 		
 		// @TODO Generate chart data xml.
+		$xml = '';
+		
+		return $xml;
 	}
 }
