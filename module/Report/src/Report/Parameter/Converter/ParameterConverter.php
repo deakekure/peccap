@@ -1,5 +1,5 @@
 <?php
-namespace Report\Parameter;
+namespace Report\Parameter\Converter;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
 use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;

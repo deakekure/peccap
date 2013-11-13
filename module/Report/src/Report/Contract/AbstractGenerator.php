@@ -1,8 +1,8 @@
 <?php
 namespace Report\Contract;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
+use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
  * 
  * @author zakyalvan
  */
-abstract class AbstractGenerator implements GeneratorInterface, DataProviderInterface, ServiceLocatorAwareInterface {
+abstract class AbstractGenerator implements GeneratorInterface, DataProviderInterface, ServiceLocatorAware {
 	/**
 	 * Id generator.
 	 * 
@@ -35,7 +35,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	protected $dataQuery;
 	
 	/**
-	 * @var ServiceLocatorInterface
+	 * @var ServiceLocator
 	 */
 	protected $serviceLocator;
 	
@@ -116,7 +116,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	 * (non-PHPdoc)
 	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
 	 */
-	public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
+	public function setServiceLocator(ServiceLocator $serviceLocator) {
 		$this->serviceLocator = $serviceLocator;
 	}
 	/**

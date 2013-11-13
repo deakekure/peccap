@@ -1,6 +1,11 @@
 <?php
 namespace Report\Contract;
 
+/**
+ * Kontrak untuk kelas yang meng-aggregate strategy reporting.
+ * 
+ * @author zakyalvan
+ */
 interface StrategyHolderInterface {
 	/**
 	 * Tambahin strategy.

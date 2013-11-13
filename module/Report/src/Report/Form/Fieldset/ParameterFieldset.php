@@ -34,7 +34,19 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
 				'allow_add' => true,
 				'count' => 0,
 				'target_element' => array(
-					'type' => 'Report\Form\Fieldset\TerritorySelection'
+					'type' => 'TerritorySelection'
+				)
+			)
+		));
+		
+		$this->add(array(
+			'name' => 'annualPeriodSelections',
+			'type' => 'Zend\Form\Element\Collection',
+			'options' => array(
+				'allow_add' => true,
+				'count' => 0,
+				'target_element' => array(
+					'type' => 'AnnualPeriodSelection'
 				)
 			)
 		));
@@ -46,7 +58,7 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
 				'allow_add' => true,
 				'count' => 0,
 				'target_element' => array(
-					'type' => 'Report\Form\Fieldset\CategorySelection'
+					'type' => 'CategorySelection'
 				)
 			)
 		));
@@ -58,19 +70,7 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
 				'allow_add' => true,
 				'count' => 0,
 				'target_element' => array(
-					'type' => 'Report\Form\Fieldset\DomainSelection'
-				)
-			)
-		));
-
-		$this->add(array(
-			'name' => 'annualPeriodSelections',
-			'type' => 'Zend\Form\Element\Collection',
-			'options' => array(
-				'allow_add' => true,
-				'count' => 0,
-				'target_element' => array(
-					'type' => 'Report\Form\Fieldset\AnnualPeriodSelection'
+					'type' => 'DomainSelection'
 				)
 			)
 		));
@@ -82,7 +82,7 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
 				'allow_add' => true,
 				'count' => 0,
 				'target_element' => array(
-					'type' => 'Report\Form\Fieldset\SourceSelection'
+					'type' => 'SourceSelection'
 				)
 			)
 		));

@@ -82,18 +82,20 @@ return array(
 		'invokables' => array(
 			'Report\Form\ParameterFilter' => 'Report\Form\ParameterFilter',
 			'Report\Form\Fieldset\ParameterFieldset' => 'Report\Form\Fieldset\ParameterFieldset',
+			'Report\Form\Fieldset\TerritorySelection' => 'Report\Form\Fieldset\TerritorySelection',
+			'Report\Form\Fieldset\AnnualPeriodSelection' => 'Report\Form\Fieldset\AnnualPeriodSelection',
 			'Report\Form\Fieldset\DomainSelection' => 'Report\Form\Fieldset\DomainSelection',
 			'Report\Form\Fieldset\CategorySelection' => 'Report\Form\Fieldset\CategorySelection',
-			'Report\Form\Fieldset\AnnualPeriodSelection' => 'Report\Form\Fieldset\AnnualPeriodSelection',
-			'Report\Form\Fieldset\TerritorySelection' => 'Report\Form\Fieldset\TerritorySelection'
+			'Report\Form\Fieldset\SourceSelection' => 'Report\Form\Fieldset\SourceSelection'
 		),
 		'aliases' => array(
 			'ParameterFilter' => 'Report\Form\ParameterFilter',
 			'ParameterFieldset' => 'Report\Form\Fieldset\ParameterFieldset',
-			'AnnualPeriodSelection' => 'Report\Form\Fieldset\AnnualPeriodSelection',
 			'TerritorySelection' => 'Report\Form\Fieldset\TerritorySelection',
+			'AnnualPeriodSelection' => 'Report\Form\Fieldset\AnnualPeriodSelection',
 			'DomainSelection' => 'Report\Form\Fieldset\DomainSelection',
-			'CategorySelection' => 'Report\Form\Fieldset\CategorySelection'
+			'CategorySelection' => 'Report\Form\Fieldset\CategorySelection',
+			'SourceSelection' => 'Report\Form\Fieldset\SourceSelection'
 		)
 	),
 	'view_manager' => array(

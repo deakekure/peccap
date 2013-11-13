@@ -2,6 +2,7 @@
 namespace Report\Parameter;
 
 use Zend\Session\Container as SessionContainer;
+use Report\Contract\Parameter;
 
 /**
  * Implementasi default parameter storage.
@@ -27,6 +28,11 @@ class Storage implements StorageInterface {
 	/**
 	 * @var Parameter
 	 */
+	private $defaultParameter;
+	
+	/**
+	 * @var Parameter
+	 */
 	private $cachedParameter;
 	
 	/**
@@ -39,6 +45,18 @@ class Storage implements StorageInterface {
 		$this->converter = $converter;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Parameter\StorageInterface::getDefault()
+	 */
+	public function getDefault() {
+		if($this->defaultParameter === null) {
+			$defaultParameter = new Parameter();
+			$this->defaultParameter = $defaultParameter;
+		}
+		return $this->defaultParameter;
+	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * @see \Report\Parameter\StorageInterface::isEmpty()

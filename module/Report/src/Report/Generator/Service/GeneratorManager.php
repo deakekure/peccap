@@ -13,8 +13,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Report\Parameter\Storage as ParameterStorage;
 use Report\Service\Exception\InvalidGeneratorException;
 use Report\Contract\GeneratorInterface as ReportGenerator;
-use Zend\Mvc\Service\FormElementManagerFactory;
-use Report\Parameter\ParameterConverter;
+use Report\Parameter\Converter\ParameterConverter;
 
 /**
  * Implementasi default report service.
@@ -36,6 +35,10 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 		parent::__construct($configuration);
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see \Zend\Stdlib\InitializableInterface::init()
+	 */
 	public function init() {
 		$parameterConverter = new ParameterConverter();
 		if($parameterConverter instanceof ServiceLocatorAwareInterface) {
@@ -45,7 +48,8 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 		
 		// Create default parameter jika parameter dalam storage kosong.
 		if($this->parameterStorage->isEmpty()) {
-			
+			$defaultParameter = $this->parameterStorage->getDefault();
+			$this->parameterStorage->write($defaultParameter);
 		}
 	}
 	
@@ -59,7 +63,7 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\Service\ReportServiceInterface::getReportGenerator()
+	 * @see \Report\Generator\Service\GeneratorManagerInterface::getReportGenerator()
 	 */
 	public function getReportGenerator($id) {
 		return $this->get($id);
