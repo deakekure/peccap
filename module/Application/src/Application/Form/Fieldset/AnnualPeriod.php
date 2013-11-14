@@ -36,7 +36,16 @@ class AnnualPeriod extends Fieldset implements InputFilterProviderInterface, Ser
 	}
 	
 	public function getInputFilterSpecification() {
-		return array();
+		return array(
+			'year' => array(
+				'required' => false,
+				'filters' => array()
+			),
+			'current' => array(
+				'required' => false,
+				'filters' => array()
+			)
+		);
 	}
 	
 	public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {

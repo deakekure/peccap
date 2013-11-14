@@ -18,23 +18,23 @@ class GeneratorManagerConfig implements Config {
 	 * @see \Zend\ServiceManager\ConfigInterface::configureServiceManager()
 	 */
 	public function configureServiceManager(ServiceManager $serviceManager) {
-		$configuration = $serviceManager->get('Config');
+// 		$configuration = $serviceManager->get('Config');
 		
-		if(isset($configuration['report_generators'])) {
-			foreach ($configuration['report_generators'] as $reportGeneratorClass) {
-				/* @var $reportGenerator GeneratorInterface */
-				$reportGenerator = new $reportGeneratorClass;
+// 		if(isset($configuration['report_generators'])) {
+// 			foreach ($configuration['report_generators'] as $reportGeneratorClass) {
+// 				/* @var $reportGenerator GeneratorInterface */
+// 				$reportGenerator = new $reportGeneratorClass;
 				
-				if(!$reportGenerator instanceof Generator) {
-					throw new \RuntimeException('Kelas report generator bukan instance dari GeneratorInterface', 100, null);
-				}
+// 				if(!$reportGenerator instanceof Generator) {
+// 					throw new \RuntimeException('Kelas report generator bukan instance dari GeneratorInterface', 100, null);
+// 				}
 				
-				if($reportGenerator instanceof ServiceLocatorAware) {
-					$reportGenerator->setServiceLocator($serviceManager);
-				}
+// 				if($reportGenerator instanceof ServiceLocatorAware) {
+// 					$reportGenerator->setServiceLocator($serviceManager);
+// 				}
 				
-				$serviceManager->setService($reportGenerator->getId(), $reportGenerator);
-			}
-		}
+// 				$serviceManager->setService($reportGenerator->getId(), $reportGenerator);
+// 			}
+// 		}
 	}
 }

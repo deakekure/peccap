@@ -12,14 +12,23 @@ use Report\Contract\DataProviderInterface;
  */
 class Chart implements StrategyInterface {
 	/**
+	 * @var string
+	 */
+	protected $name = self::CHART_STRATEGY;
+	
+	/**
 	 * @var DataProviderInterface
 	 */
-	private $dataProvider;
+	protected $dataProvider;
 	
 	/**
 	 * @var string
 	 */
-	private $chartType;
+	protected $chartType;
+	
+	public function getName() {
+		return $this->name;
+	}
 	
 	/**
 	 * (non-PHPdoc)
@@ -40,7 +49,7 @@ class Chart implements StrategyInterface {
 		return $this->chartType;
 	}
 	
-	public function getChartDatas() {
+	public function getChartData() {
 		$datas = $this->dataProvider->getDatas();
 		
 		// @TODO Generate chart data xml.

@@ -10,7 +10,7 @@ use Application\Entity\AnnualPeriod;
  * 
  * @author zakyalvan
  */
-class AnnualPeriodConveter implements Converter, ObjectManagerAware {
+class AnnualPeriodConverter implements Converter, ObjectManagerAware {
 	/**
 	 * @var ObjectManager
 	 */
@@ -36,7 +36,7 @@ class AnnualPeriodConveter implements Converter, ObjectManagerAware {
 	 * @see \Report\Parameter\ConverterInterface::convertToParameter()
 	 */
 	public function convertToParameter($storageArray) {
-		$this->objectManager->find('Application\Entity\AnnualPeriod', $storageArray['year']);
+		return $this->objectManager->find('Application\Entity\AnnualPeriod', $storageArray['year']);
 	}
 	
 	/**

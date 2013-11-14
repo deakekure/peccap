@@ -16,7 +16,12 @@ class AnnualPeriodSelection extends Fieldset {
 		
 		$this->add(array(
 			'name' => 'selection',
-			'type' => 'checkbox'
+			'type' => 'checkbox',
+			'options' => array(
+				'use_hidden_element' => true,
+				'checked_value' => 1,
+				'unchecked_value' => 0
+			)
 		));
 		
 		$this->add(array(

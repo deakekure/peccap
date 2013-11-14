@@ -47,6 +47,16 @@ return array(
 							)
 						)
 					),
+					'detail' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/detail',
+							'defaults' => array(
+								'controller' => 'Report\Controller\Index',
+								'action'     => 'detail'
+							)
+						)
+					),
 					'template' => array(
 						'type'    => 'Segment',
 						'options' => array(

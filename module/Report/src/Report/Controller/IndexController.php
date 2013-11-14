@@ -3,7 +3,9 @@ namespace Report\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Doctrine\ORM\EntityManager;
+use Report\Form\ParameterFilter;
 use Report\Form\Object\ParameterFilter as ParameterFilterObject;
+use Report\Generator\Service\GeneratorManagerInterface;
 
 /**
  * Controller utama dari modul reporting.
@@ -41,7 +43,7 @@ class IndexController extends AbstractActionController {
 	 * @return array
 	 */
 	public function filterAction() {
-		/* @var $filterForm ExpenditureFilterForm */
+		/* @var $filterForm ParameterFilter */
 		$filterForm = $this->serviceLocator->get('FormElementManager')->get('ParameterFilter');
 		
 		/* @var $entityManager EntityManager */
@@ -53,13 +55,24 @@ class IndexController extends AbstractActionController {
 		$categories = $entityManager->getRepository('Expenditure\Entity\Category')->findAll();
 		$sources = $entityManager->getRepository('Income\Entity\Source')->findAll();
 		
+		$filterForm->setParameter($this->getReportGeneratorManager()->getParameterStorage()->read());
+		
 		$filterObject = new ParameterFilterObject($territories, $annualPeriods, $domains, $categories, $sources);
 		$filterForm->bind($filterObject);
 		
 		if($this->request->isPost()) {
 			$filterForm->setData($this->request->getPost());
 			if($filterForm->isValid()) {
-				$validFilterObject = $filterForm->getObject();
+				// Jika reset diklik.
+				if($this->request->getPost('reset') === $filterForm->get('reset')->getValue()) {
+					$this->getReportGeneratorManager()->getParameterStorage()->reset();
+					$this->redirect()->toRoute('report/filter');
+				}
+				// Jika submit diklik
+				else {
+					$this->getReportGeneratorManager()->getParameterStorage()->write($filterForm->getParameter());
+					$this->redirect()->toRoute('report/detail');
+				}
 			}
 		}
 		
@@ -73,5 +86,12 @@ class IndexController extends AbstractActionController {
 	 */
 	public function detailAction() {
 		
+	}
+	
+	/**
+	 * @return GeneratorManagerInterface
+	 */
+	protected function getReportGeneratorManager() {
+		return $this->getServiceLocator()->get('ReportGeneratorManager');
 	}
 }

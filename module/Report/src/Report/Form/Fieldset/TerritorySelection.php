@@ -7,7 +7,7 @@ use Report\Form\Object\TerritorySelection as TerritorySelectionObject;
 
 class TerritorySelection extends Fieldset {
 	public function __construct() {
-		parent::__construct('annualReportSelection');
+		parent::__construct('territorySelection');
 	}
 	
 	public function init() {

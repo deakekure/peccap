@@ -30,6 +30,9 @@ class AnnualPeriodSelection {
 		$this->selection = $selection;
 	}
 		
+	/**
+	 * @var AnnualPeriod
+	 */
 	private $annualPeriod;
 	public function getAnnualPeriod() {
 		return $this->annualPeriod;

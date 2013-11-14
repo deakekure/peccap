@@ -8,7 +8,7 @@ use Report\Contract\Exception\GeneratorException;
  * 
  * @author zakyalvan
  */
-interface GeneratorInterface {
+interface GeneratorInterface extends ParameterAwareInterface {
 	/**
 	 * Retrieve id dari generator.
 	 * 
@@ -22,7 +22,7 @@ interface GeneratorInterface {
 	 * @param Parameter $parameter
 	 * @return boolean
 	 */
-	public function canGenerate(Parameter $parameter);
+	public function canGenerate(Parameter $parameter = null);
 	
 	/**
 	 * Generate report.
@@ -31,5 +31,5 @@ interface GeneratorInterface {
 	 * @throws GeneratorException
 	 * @return Report
 	 */
-	public function generate(Parameter $parameter);
+	public function generate(Parameter $parameter = null);
 }

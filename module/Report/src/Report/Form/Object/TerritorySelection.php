@@ -31,6 +31,9 @@ class TerritorySelection {
 		$this->selection = $selection;
 	}
 		
+	/**
+	 * @var Territory
+	 */
 	private $territory;
 	public function getTerritory() {
 		return $this->territory;

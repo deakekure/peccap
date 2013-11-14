@@ -49,6 +49,13 @@ class Storage implements StorageInterface, ServiceLocatorAware {
 	 */
 	private $serviceLocator;
 	
+	/**
+	 * Gunakan default parameter jika parameter storage empty atau pada saat direset.
+	 * 
+	 * @var unknown
+	 */
+	private $useDefaultIfNull = true;
+	
 	public function __construct(ConverterInterface $converter) {
 		$this->sessionContainer = new SessionContainer($this->storageNamespace);
 		$this->converter = $converter;
@@ -71,8 +78,6 @@ class Storage implements StorageInterface, ServiceLocatorAware {
 			
 			$parameter->getAnnualPeriods()->add($currentAnnualPeriod);
 			
-			
-			
 			$this->defaultParameter = $parameter;
 		}
 		return $this->defaultParameter;
@@ -83,7 +88,7 @@ class Storage implements StorageInterface, ServiceLocatorAware {
 	 * @see \Report\Parameter\StorageInterface::isEmpty()
 	 */
 	public function isEmpty() {
-		return isset($this->sessionContainer->{$this->storageKey});
+		return !isset($this->sessionContainer->{$this->storageKey});
 	}
 	/**
 	 * (non-PHPdoc)
@@ -105,9 +110,18 @@ class Storage implements StorageInterface, ServiceLocatorAware {
 		if(!$this->isEmpty()) {
 			$parameter = $this->converter->convertToParameter($this->sessionContainer->{$this->storageKey});
 			$this->cachedParameter = $parameter;
+			
 			return $parameter;
 		}
-		return null;
+		else {
+			$parameter = null;
+			if($this->useDefaultIfNull) {
+				$parameter = $this->getDefault();
+				$this->write($parameter);
+				$this->cachedParameter = $parameter;
+			}
+			return $parameter;
+		}
 	}
 	
 	/**

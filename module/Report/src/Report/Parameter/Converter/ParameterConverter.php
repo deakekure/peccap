@@ -4,6 +4,7 @@ namespace Report\Parameter\Converter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
 use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;
 use Report\Contract\Parameter;
+use Report\Parameter\ConverterInterface;
 use Report\Parameter\ConverterAggregateInterface as ConverterAggregate;
 use Report\Parameter\Exception\ConversionException;
 
@@ -101,7 +102,7 @@ class ParameterConverter implements ConverterInterface, ConverterAggregate, Serv
 		}
 		
 		throw new ConversionException(
-			sprintf('Parameter object yang diberikan bukan instance dari kelas %s. %s diberikan.', 'Report\Contract\Parameter', var_dump($storageArray)),
+			sprintf('Parameter storage-array yang diberikan bukan array. %s diberikan.', var_dump($storageArray)),
 			100,
 			null
 		);

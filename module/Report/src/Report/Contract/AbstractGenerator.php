@@ -20,7 +20,14 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	 * 
 	 * @var string
 	 */
-	private $id;
+	protected $id;
+	
+	/**
+	 * Parameter untuk generator.
+	 * 
+	 * @var Parameter
+	 */
+	protected $parameter;
 	
 	/**
 	 * FQCN data class yang di-provide.
@@ -41,6 +48,13 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	 */
 	protected $serviceLocator;
 	
+	/**
+	 * Array strategy untuk report.
+	 * 
+	 * @var array
+	 */
+	protected $strategies = array();
+	
 	public function __construct($id) {
 		$this->id = $id;
 	}
@@ -52,12 +66,44 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	public function getId() {
 		return $this->id;
 	}
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Contract\ParameterAwareInterface::setParameter()
+	 */
+	public function setParameter(Parameter $parameter) {
+		$this->parameter = $parameter;
+	}
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Contract\ParameterAwareInterface::getParameter()
+	 */
+	public function getParameter() {
+		return $this->parameter;
+	}
+	
+	/**
+	 * Check apakah report dapat digenerate berdasarkan parameter yang diberikan.
+	 * 
+	 * @param Parameter $parameter
+	 */
+	abstract protected function checkCanGenerate(Parameter $parameter);
 	
 	/**
 	 * (non-PHPdoc)
 	 * @see \Report\Contract\GeneratorInterface::canGenerate()
 	 */
-	abstract public function canGenerate(Parameter $parameter);
+	public function canGenerate(Parameter $parameter = null) {
+		// Jika parameter sama sekali belum diberikan.
+		if($this->parameter === null && $parameter === null) {
+			return false;
+		}
+		
+		if($parameter !== null) {
+			$this->setParameter($parameter);
+		}
+		
+		return $this->checkCanGenerate($this->parameter);
+	}
 	
 	/**
 	 * Build query berdasarkan parameter yang diberikan.
@@ -70,11 +116,23 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	 * (non-PHPdoc)
 	 * @see \Report\Contract\GeneratorInterface::generate()
 	 */
-	public function generate(Parameter $parameter) {
-		/* @var $entityManager EntityManager */ 
+	public function generate(Parameter $parameter = null) {
+		if($this->parameter === null && $parameter === null) {
+			throw new GeneratorException('Object parameter belum diberikan', 100, null);
+		}
+		
+		if($parameter !== null) {
+			$this->setParameter($parameter);
+		}
+		
+		if(!$this->canGenerate($this->getParameter())) {
+			throw new GeneratorException('Tidak dapat menggenarate report berdasarkan parameter yang diberikan.', 100, null);
+		}
+		
+		/* @var $entityManager EntityManager */
 		$entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
 		
-		$dataQuery = $this->buildDataQuery($parameter, $entityManager);
+		$dataQuery = $this->buildDataQuery($this->parameter, $entityManager);
 		if($dataQuery instanceof QueryBuilder) {
 			$this->dataQuery = $dataQuery->getQuery();
 		}
@@ -89,8 +147,15 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 			);
 		}
 		
+		// Create report object.
 		$report = new Report($this->getDataClass());
 		$report->setDataProvider($this);
+		
+		// Populate seluruh strategy yang telah terdaftar ke dalam report object.
+		foreach ($this->strategies as $name => $strategy) {
+			$report->addStrategy($name, $strategy);
+		}
+		
 		return $report;
 	}
 	
@@ -118,7 +183,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 	public function getDatas() {
 		if(!$this->dataQuery) {
 			throw new DataProviderException(
-				sprintf('Data provider error, object data-query belum disediakan.'), 
+				sprintf('Data provider error, object data-query belum disediakan (report belum digenerate).'), 
 				100,
 				null
 			);
