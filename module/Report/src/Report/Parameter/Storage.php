@@ -5,6 +5,8 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
 use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;
 use Zend\Session\Container as SessionContainer;
 use Report\Contract\Parameter;
+use Doctrine\ORM\EntityManager;
+use Application\Entity\Repository\AnnualPeriodRepository;
 
 /**
  * Implementasi default parameter storage.
@@ -59,6 +61,15 @@ class Storage implements StorageInterface, ServiceLocatorAware {
 	public function getDefault() {
 		if($this->defaultParameter === null) {
 			$parameter = new Parameter();
+			
+			/* @var $entityManager EntityManager */
+			$entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
+			
+			/* @var $annualPeriodRepository AnnualPeriodRepository */
+			$annualPeriodRepository = $entityManager->getRepository('Application\Entity\AnnualPeriod');
+			$currentAnnualPeriod = $annualPeriodRepository->getCurrent();
+			
+			$parameter->getAnnualPeriods()->add($currentAnnualPeriod);
 			
 			
 			

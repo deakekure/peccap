@@ -7,7 +7,7 @@ use Report\Contract\AbstractGenerator;
 use Report\Contract\Parameter;
 
 /**
- * Kelas yang menggenerate data laporan total pengeluran tahunan masing-masing daerah.
+ * Kelas yang menggenerate data laporan total penerimaan tahunan masing-masing daerah.
  * 
  * @author zakyalvan
  */

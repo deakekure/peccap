@@ -53,6 +53,8 @@ interface StrategyHolderInterface {
 	public function setAllowStrategyOverride($allowStrategyOverride);
 	
 	/**
+	 * Retrieve apakah strategy boleh dioverride atau tidak.
+	 * 
 	 * @return boolean
 	 */
 	public function getAllowStrategyOverride();

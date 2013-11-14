@@ -15,7 +15,7 @@ interface ReportInterface {
 	public function getDataProvider();
 	
 	/**
-	 * Set reportpdata-provider. Supplai data-provider ini adalah tanggung jawab dari report generator.
+	 * Set report-data-provider. Supplai data-provider ini adalah tanggung jawab dari report generator.
 	 * Data provider ini memungkinkan generate data on-demand.
 	 * 
 	 * @param DataProviderInterface $dataProvider

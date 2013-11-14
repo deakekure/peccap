@@ -14,6 +14,12 @@ use Report\Parameter\Storage as ParameterStorage;
 use Report\Service\Exception\InvalidGeneratorException;
 use Report\Contract\GeneratorInterface as ReportGenerator;
 use Report\Parameter\Converter\ParameterConverter;
+use Report\Parameter\Converter\AnnualPeriodConveter;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Report\Parameter\Converter\TerritoryConverter;
+use Report\Parameter\Converter\DomainConverter;
+use Report\Parameter\Converter\CategoryConverter;
+use Report\Parameter\Converter\SourceConverter;
 
 /**
  * Implementasi default report service.
@@ -40,11 +46,43 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 	 * @see \Zend\Stdlib\InitializableInterface::init()
 	 */
 	public function init() {
+		// Create parameter converter. Akan digunakan dalam parameter storage.
 		$parameterConverter = new ParameterConverter();
 		if($parameterConverter instanceof ServiceLocatorAwareInterface) {
 			$parameterConverter->setServiceLocator($this->getServiceLocator());
 		}
 		
+		$annualPeriodConverter = new AnnualPeriodConveter();
+		if($annualPeriodConverter instanceof ObjectManagerAwareInterface) {
+			$annualPeriodConverter->setObjectManager($this->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+		}
+		$parameterConverter->addConverter('Application\Entity\AnnualPeriod', $annualPeriodConverter);
+		
+		$territoryConverter = new TerritoryConverter();
+		if($territoryConverter instanceof ObjectManagerAwareInterface) {
+			$territoryConverter->setObjectManager($this->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+		}
+		$parameterConverter->addConverter('Application\Entity\Territory', $territoryConverter);
+		
+		$domainConverter = new DomainConverter();
+		if($domainConverter instanceof ObjectManagerAwareInterface) {
+			$domainConverter->setObjectManager($this->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+		}
+		$parameterConverter->addConverter('Expenditure\Entity\Domain', $domainConverter);
+		
+		$categoryConverter = new CategoryConverter();
+		if($categoryConverter instanceof ObjectManagerAwareInterface) {
+			$categoryConverter->setObjectManager($this->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+		}
+		$categoryConverter->addConverter('Expenditure\Entity\Category', $categoryConverter);
+		
+		$sourceConverter = new SourceConverter();
+		if($sourceConverter instanceof ObjectManagerAwareInterface) {
+			$sourceConverter->setObjectManager($this->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+		}
+		$categoryConverter->addConverter('Income\Entity\Source', $sourceConverter);
+		
+		// Create parameter storage.
 		$parameterStorage = new ParameterStorage($parameterConverter);
 		if($parameterStorage instanceof  ServiceLocatorAwareInterface) {
 			$parameterStorage->setServiceLocator($this->getServiceLocator());

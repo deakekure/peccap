@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as Orm;
 /**
  * Perode pencatatan. Sebenarnya hanya bernilai tahun saja.
  * 
- * @Orm\Entity
+ * @Orm\Entity(repositoryClass="Application\Entity\Repository\AnnualPeriodRepository")
  * @Orm\Table(name="peccap_annual_period")
  * 
  * @author zakyalvan

@@ -17,13 +17,15 @@ class GeneratorManagerFactory implements Factory {
 	 */
 	public function createService(ServiceLocator $serviceLocator) {
 		$generatorManagerConfig = new GeneratorManagerConfig();
+		
 		$generatorManager = new GeneratorManager($generatorManagerConfig);
 		$generatorManager->setServiceLocator($serviceLocator);
+		$generatorManager->addPeeringServiceManager($serviceLocator);
+		$generatorManager->setRetrieveFromPeeringManagerFirst(true);
+		
 		if($generatorManager instanceof Initializable) {
 			$generatorManager->init();
 		}
-		$generatorManager->addPeeringServiceManager($serviceLocator);
-		$generatorManager->setRetrieveFromPeeringManagerFirst(true);
 		
 		$configuration = $serviceLocator->get('Config');
 		if (isset($configuration['di']) && $serviceLocator->has('Di')) {
