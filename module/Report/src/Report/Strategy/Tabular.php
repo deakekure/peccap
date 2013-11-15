@@ -1,28 +1,8 @@
 <?php
 namespace Report\Strategy;
 
-use Report\Contract\StrategyInterface;
-use Report\Contract\DataProviderInterface;
+use Report\Contract\AbstractStrategy;
 
-class Tabular implements StrategyInterface {
-	/**
-	 * @var DataProviderInterface
-	 */
-	private $dataProvider;
+class Tabular extends AbstractStrategy {
 	
-	/**
-	 * (non-PHPdoc)
-	 * @see \Report\Contract\ReportInterface::getDataProvider()
-	 */
-	public function getDataProvider() {
-		return $this->dataProvider;
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see \Report\Contract\ReportInterface::setDataProvider()
-	 */
-	public function setDataProvider(DataProviderInterface $dataProvider) {
-		$this->dataProvider = $dataProvider;
-	}
 }

@@ -74,9 +74,31 @@ class Storage implements StorageInterface, ServiceLocatorAware {
 			
 			/* @var $annualPeriodRepository AnnualPeriodRepository */
 			$annualPeriodRepository = $entityManager->getRepository('Application\Entity\AnnualPeriod');
-			$currentAnnualPeriod = $annualPeriodRepository->getCurrent();
+			$lastAnnualPeriods = $annualPeriodRepository->getLastPeriods(3);
 			
-			$parameter->getAnnualPeriods()->add($currentAnnualPeriod);
+			foreach ($lastAnnualPeriods as $annualPeriod) {
+				$parameter->getAnnualPeriods()->add($annualPeriod);
+			}
+			
+			$territories = $entityManager->getRepository('Application\Entity\Territory')->findAll();
+			foreach ($territories as $territory) {
+				$parameter->getTerritories()->add($territory);
+			}
+			
+			$domains = $entityManager->getRepository('Expenditure\Entity\Domain')->findAll();
+			foreach ($domains as $domain) {
+				$parameter->getDomains()->add($domain);
+			}
+			
+			$categories = $entityManager->getRepository('Expenditure\Entity\Category')->findAll();
+			foreach ($categories as $category) {
+				$parameter->getCategories()->add($category);
+			}
+			
+			$sources = $entityManager->getRepository('Income\Entity\Source')->findAll();
+			foreach ($sources as $source) {
+				$parameter->getSources()->add($source);
+			}
 			
 			$this->defaultParameter = $parameter;
 		}

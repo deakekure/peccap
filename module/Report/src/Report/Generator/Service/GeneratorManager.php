@@ -4,21 +4,20 @@ namespace Report\Generator\Service;
 use Zend\Stdlib\InitializableInterface as Initializable;
 use Zend\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
 use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator;
-use Zend\Form\FormElementManager;
 use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Report\Parameter\Storage as ParameterStorage;
 use Report\Service\Exception\InvalidGeneratorException;
 use Report\Contract\GeneratorInterface as ReportGenerator;
 use Report\Parameter\Converter\ParameterConverter;
 use Report\Parameter\Converter\AnnualPeriodConverter;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Report\Parameter\Converter\TerritoryConverter;
 use Report\Parameter\Converter\DomainConverter;
 use Report\Parameter\Converter\CategoryConverter;
 use Report\Parameter\Converter\SourceConverter;
+use Report\Contract\AbstractGenerator;
 
 /**
  * Implementasi default report service.
@@ -83,7 +82,7 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 		
 		// Create parameter storage.
 		$parameterStorage = new ParameterStorage($parameterConverter);
-		if($parameterStorage instanceof  ServiceLocatorAwareInterface) {
+		if($parameterStorage instanceof  ServiceLocatorAware) {
 			$parameterStorage->setServiceLocator($this->getServiceLocator());
 		}
 		
@@ -93,6 +92,16 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 		}
 		
 		$this->parameterStorage = $parameterStorage;
+		
+		// Create dan register generator service.
+		$config = $this->getServiceLocator()->get('Config');
+		if(isset($config['report']['generators'])) {
+			$generators = $config['report']['generators'];
+			foreach ($generators as $key => $generatorClass) {
+				$generator = new $generatorClass($key);
+				$this->setService($key, $generator, false);
+			}
+		}
 	}
 	
 	/**
@@ -116,10 +125,12 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 	 * @see \Zend\ServiceManager\AbstractPluginManager::validatePlugin()
 	 */
 	public function validatePlugin($plugin) {
-		if ($plugin instanceof Initializable) {
+		if($plugin instanceof ServiceLocatorAware) {
+			$plugin->setServiceLocator($this->getServiceLocator());
+		}
+		if($plugin instanceof Initializable) {
 			$plugin->init();
 		}
-		
 		if($plugin instanceof ReportGenerator) {
 			return;
 		}

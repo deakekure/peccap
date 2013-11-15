@@ -136,5 +136,11 @@ return array(
 				)
 			)
 		)
+	),
+	'report' => array(
+		'generators' => array(
+			'1' => 'Report\Generator\PeriodicalTerritoryTotalExpenditureGenerator',
+			'2' => 'Report\Generator\PeriodicalTerritoryTotalIncomeGenerator'
+		)
 	)
 );

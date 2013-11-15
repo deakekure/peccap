@@ -1,6 +1,8 @@
 <?php
 namespace Report\Contract;
 
+use Report\Contract\StrategyInterface;
+
 /**
  * Kontrak untuk kelas yang meng-aggregate strategy reporting.
  * 
@@ -10,7 +12,7 @@ interface StrategyHolderInterface {
 	/**
 	 * Tambahin strategy.
 	 * 
-	 * @param unknown $name
+	 * @param string $name
 	 * @param StrategyInterface $strategy
 	 */
 	public function addStrategy($name, StrategyInterface $strategy);

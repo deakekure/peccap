@@ -6,7 +6,7 @@ namespace Report\Contract;
  * 
  * @author zakyalvan
  */
-interface StrategyInterface extends ReportInterface {
+interface StrategyInterface extends \Serializable, ReportInterface, DataSerializerAwareInterface {
 	const CHART_STRATEGY = 'chart';
 	const TABULAR_STRATEGY = 'tabular';
 	
@@ -16,4 +16,11 @@ interface StrategyInterface extends ReportInterface {
 	 * @return string
 	 */
 	public function getName();
+	
+	/**
+	 * Set nama strategy.
+	 * 
+	 * @param string $name
+	 */
+	public function setName($name);
 }

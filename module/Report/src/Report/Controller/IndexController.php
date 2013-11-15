@@ -43,6 +43,9 @@ class IndexController extends AbstractActionController {
 	 * @return array
 	 */
 	public function filterAction() {
+		$report = $this->getReportGeneratorManager()->getReportGenerator('2')->generate($this->getReportGeneratorManager()->getParameterStorage()->read());
+		$report->getStrategy('chart')->serialize();
+	
 		/* @var $filterForm ParameterFilter */
 		$filterForm = $this->serviceLocator->get('FormElementManager')->get('ParameterFilter');
 		

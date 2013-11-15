@@ -41,18 +41,19 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	 */
 	public function __construct($dataClass) {
 		if(!class_exists($dataClass)) {
-			throw new \InvalidArgumentException(sprintf(''), 100, null);
+			throw new \InvalidArgumentException(sprintf('Data class tidak ditemukan.'), 100, null);
 		}
 		
-		if(!($dataClass instanceof DataInterface)) {
-			throw new \InvalidArgumentException(sprintf(''), 100, null);
+		$dataClassInterfaces = class_implements($dataClass, true);
+		if(!array_key_exists('Report\Contract\DataInterface', $dataClassInterfaces)) {
+			throw new \InvalidArgumentException(sprintf('Data bukan instance dari DataInterface'), 100, null);
 		}
 		$this->dataClass = $dataClass;
 	}
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\ReportInterface::getDataProvider()
+	 * @see \Report\Contract\ReportInterface::getDataProvider()
 	 */
 	public function getDataProvider() {
 		return $this->dataProvider;
@@ -60,7 +61,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\ReportInterface::setDataProvider()
+	 * @see \Report\Contract\ReportInterface::setDataProvider()
 	 */
 	public function setDataProvider(DataProviderInterface $dataProvider) {
 		// @TODO Validasi apakah dataClass dari provider sama dengan dataClass yang dibutuhkan.
@@ -75,7 +76,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::addStrategy()
+	 * @see \Report\Contract\StrategyHolderInterface::addStrategy()
 	 */
 	public function addStrategy($name, StrategyInterface $strategy) {
 		if($this->hasStrategy($name) && !$this->allowStrategyOverride) {
@@ -90,7 +91,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::hasStrategy()
+	 * @see \Report\Contract\StrategyHolderInterface::hasStrategy()
 	 */
 	public function hasStrategy($name) {
 		return array_key_exists($name, $this->strategies);
@@ -98,7 +99,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::getStrategy()
+	 * @see \Report\Contract\StrategyHolderInterface::getStrategy()
 	 */
 	public function getStrategy($name) {
 		if($this->hasStrategy($name)) {
@@ -109,7 +110,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::getStrategies()
+	 * @see \Report\Contract\StrategyHolderInterface::getStrategies()
 	 */
 	public function getStrategies() {
 		return array_merge(array(), $this->strategies);
@@ -117,7 +118,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::removeStrategy()
+	 * @see \Report\Contract\StrategyHolderInterface::removeStrategy()
 	 */
 	public function removeStrategy($name) {
 		if($this->hasStrategy($name)) {
@@ -129,7 +130,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::setAllowStrategyOverride()
+	 * @see \Report\Contract\StrategyHolderInterface::setAllowStrategyOverride()
 	 */
 	public function setAllowStrategyOverride($allowStrategyOverride) {
 		$this->allowStrategyOverride = (boolean) $allowStrategyOverride;
@@ -137,7 +138,7 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\StrategyHolderInterface::getAllowStrategyOverride()
+	 * @see \Report\Contract\StrategyHolderInterface::getAllowStrategyOverride()
 	 */
 	public function getAllowStrategyOverride() {
 		return $this->allowStrategyOverride;

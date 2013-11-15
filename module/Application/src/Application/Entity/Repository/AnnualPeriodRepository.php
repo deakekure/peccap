@@ -13,7 +13,7 @@ class AnnualPeriodRepository extends EntityRepository {
 	/**
 	 * @return AnnualPeriod
 	 */
-	public function getCurrent() {
+	public function getCurrentPeriod() {
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		return $queryBuilder->select('period')
 			->from($this->getClassName(), 'period')
@@ -21,5 +21,19 @@ class AnnualPeriodRepository extends EntityRepository {
 			->setParameter('notCurrentFlag', 0)
 			->getQuery()
 			->getSingleResult();
+	}
+	
+	/**
+	 * Ambil lima periode tahunan terakhir.
+	 */
+	public function getLastPeriods($number = 5) {
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
+		return $queryBuilder->select('period')
+			->from($this->getClassName(), 'period')
+			->orderBy('period.year', 'DESC')
+			->getQuery()
+			->setFirstResult(0)
+			->setMaxResults($number)
+			->getResult();
 	}
 }

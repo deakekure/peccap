@@ -5,6 +5,10 @@ use Zend\Stdlib\InitializableInterface as Initializable;
 use Doctrine\ORM\EntityManager;
 use Report\Contract\AbstractGenerator;
 use Report\Contract\Parameter;
+use Report\Strategy\Chart as ChartStrategy;
+use Report\Strategy\Tabular as TabularStrategy;
+use Report\Contract\CallbackDataSerializer;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Kelas yang menggenerate data laporan total penerimaan tahunan masing-masing daerah.
@@ -18,13 +22,24 @@ class PeriodicalTerritoryTotalIncomeGenerator extends AbstractGenerator implemen
 	 */
 	public function init() {
 		$this->dataClass = 'Report\Generator\Data\PeriodicalTerritoryTotalIncome';
+		$chartStrategy = new ChartStrategy();
+		$chartStrategy->setDataSerializer(new CallbackDataSerializer(function(ArrayCollection $datas) {
+			
+		}));
+		$this->strategies['chart'] = $chartStrategy;
+		
+		$tabularStrategy = new TabularStrategy();
+		$tabularStrategy->setDataSerializer(new CallbackDataSerializer(function(ArrayCollection $datas) {
+			
+		}));
+		$this->strategies['tabular'] = $tabularStrategy;
 	}
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\Contract\AbstractGenerator::canGenerate()
+	 * @see \Report\Contract\AbstractGenerator::checkCanGenerate()
 	 */
-	public function canGenerate(Parameter $parameter) {
-		
+	protected function checkCanGenerate(Parameter $parameter) {
+		return true;
 	}
 	/**
 	 * (non-PHPdoc)

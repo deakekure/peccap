@@ -1,9 +1,9 @@
 <?php
 namespace Report\Generator\Service;
 
-use Report\Parameter\StorageInterface;
-use Report\Generator\GeneratorInterface;
 use Zend\ServiceManager\AbstractPluginManager;
+use Report\Parameter\StorageInterface;
+use Report\Contract\GeneratorInterface;
 
 /**
  * Ini kontrak untuk kelas report manager.

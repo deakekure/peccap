@@ -8,6 +8,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Report\Contract\Exception\GeneratorException;
+use Report\Contract\Exception\DataProviderException;
 
 /**
  * Abstract report generator.
@@ -102,7 +103,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 			$this->setParameter($parameter);
 		}
 		
-		return $this->checkCanGenerate($this->parameter);
+		return $this->checkCanGenerate($this->getParameter());
 	}
 	
 	/**
@@ -132,7 +133,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 		/* @var $entityManager EntityManager */
 		$entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
 		
-		$dataQuery = $this->buildDataQuery($this->parameter, $entityManager);
+		$dataQuery = $this->buildDataQuery($this->getParameter(), $entityManager);
 		if($dataQuery instanceof QueryBuilder) {
 			$this->dataQuery = $dataQuery->getQuery();
 		}
