@@ -5,6 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Authentication\AuthenticationService;
 use Application\Security\Authentication\Adapter;
 use Application\Form\LoginForm;
+use Zend\Authentication\Result;
 
 class SecurityController extends AbstractActionController {
 	/**
@@ -19,6 +20,7 @@ class SecurityController extends AbstractActionController {
 			$this->redirect()->toRoute('home');
 		}
 		
+		$errorMessage = false;
 		if($this->request->isPost()) {
 			$loginForm->setData($this->request->getPost());
 			
@@ -32,10 +34,24 @@ class SecurityController extends AbstractActionController {
 				if($authenticationResult->isValid()) {
 					$this->redirect()->toRoute('report');
 				}
+				else {
+					switch ($authenticationResult->getCode()) {
+						case Result::FAILURE_IDENTITY_NOT_FOUND :
+							$errorMessage = 'Username yang Anda berikan tidak valid';
+							break;
+						case Result::FAILURE_CREDENTIAL_INVALID :
+							$errorMessage = 'Password yang Anda berikan salah';
+							break;
+						case Result::FAILURE :
+							$errorMessage = 'Login gagal';
+							break;
+					}
+				}
 			}
 		}
 		
 		return array(
+			'errorMessage' => $errorMessage,
 			'loginForm' => $loginForm
 		);
 	}
