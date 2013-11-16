@@ -28,7 +28,7 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 	/**
 	 * @var ParameterStorage
 	 */
-	private $parameterStorage;
+	protected $parameterStorage;
 	
 	/**
 	 * @var boolean

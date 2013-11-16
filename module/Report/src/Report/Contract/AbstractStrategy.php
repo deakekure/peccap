@@ -5,6 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Report\Contract\Exception\DataSerializingException;
 
 /**
+ * Abstract report strategy.
  * 
  * @author zakyalvan
  */
@@ -38,6 +39,7 @@ abstract class AbstractStrategy implements StrategyInterface {
 	public function setName($name) {
 		$this->name = $name;
 	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * @see \Report\Contract\ReportInterface::getDataProvider()
@@ -74,7 +76,7 @@ abstract class AbstractStrategy implements StrategyInterface {
 	 */
 	public function serialize() {
 		if($this->dataSerializer !== null) {
-			return $this->dataSerializer->serialize(new ArrayCollection());
+			return $this->dataSerializer->serialize($this->dataProvider->getDatas());
 		}
 		throw new DataSerializingException('Serialize object data gagal. Object data-serializer belum diberikan.', 100, null);
 	}

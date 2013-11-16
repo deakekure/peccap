@@ -2,6 +2,8 @@
 namespace Report\Contract;
 
 use Report\Contract\Exception\GeneratorException;
+use Report\Contract\Report;
+use Report\Contract\Parameter;
 
 /**
  * Kontrak dasar untuk report generator.

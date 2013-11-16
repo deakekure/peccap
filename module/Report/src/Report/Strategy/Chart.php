@@ -5,7 +5,7 @@ use Report\Contract\AbstractStrategy;
 
 /**
  * Strategy reporting menggunakan chart.
- * Lebih spesifik chart ini menggunakan fussion chart.
+ * Lebih spesifik chart ini menggunakan highcharts (http://www.highcharts.com).
  * 
  * @author zakyalvan
  */

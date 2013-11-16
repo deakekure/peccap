@@ -6,6 +6,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Report\Contract\GeneratorInterface;
 use Report\Contract\Report;
+use Report\Generator\Service\GeneratorManagerInterface;
 
 /**
  * Kontrak untuk report view helper.
@@ -51,7 +52,7 @@ abstract class AbstractReportRenderer extends AbstractHelper implements ServiceL
 		
 		/* @var $reportGenerator GeneratorInterface */
 		$reportGenerator = $this->getReportGeneratorManager()->getReportGenerator($reportId);
-		$this->doRender($reportGenerator->generate($this->getReportGeneratorManager()->getParameterStorage()->read()));
+		$this->doRender($reportGenerator);
 	}
 	
 	/**
@@ -59,10 +60,12 @@ abstract class AbstractReportRenderer extends AbstractHelper implements ServiceL
 	 * 
 	 * @param GeneratorInterface $reportGenerator
 	 */
-	abstract protected function doRender(Report $report);
+	abstract protected function doRender(GeneratorInterface $reportGenerator);
 	
 	/**
-	 * @return ReportGeneratorManager
+	 * Retrieve report generator manager.
+	 * 
+	 * @return GeneratorManagerInterface
 	 */
 	protected function getReportGeneratorManager() {
 		if($this->reportGeneratorManager === null) {

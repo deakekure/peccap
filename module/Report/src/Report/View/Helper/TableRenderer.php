@@ -2,7 +2,13 @@
 namespace Report\View\Helper;
 
 use Report\Contract\Report;
+use Report\Contract\GeneratorInterface;
 
+/**
+ * Ngerender data laporan dalam bentuk table.
+ * 
+ * @author zakyalvan
+ */
 class TableRenderer extends AbstractReportRenderer {
 	/**
 	 * @var boolean
@@ -11,9 +17,9 @@ class TableRenderer extends AbstractReportRenderer {
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \Report\View\Helper\ReportRendererInterface::render()
+	 * @see \Report\View\Helper\AbstractReportRenderer::doRender()
 	 */
-	protected function doRender(Report $report) {
-	
+	protected function doRender(GeneratorInterface $reportGenerator) {
+		
 	}
 }

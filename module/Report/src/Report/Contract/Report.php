@@ -8,6 +8,13 @@ namespace Report\Contract;
  */
 class Report implements ReportInterface, StrategyHolderInterface {
 	/**
+	 * Id dari report. Ini akan diset oleh object report-generator.
+	 * 
+	 * @var string
+	 */
+	private $id;
+	
+	/**
 	 * FQCN data class yang dibutuhkan oleh report.
 	 * 
 	 * @var string
@@ -49,6 +56,24 @@ class Report implements ReportInterface, StrategyHolderInterface {
 			throw new \InvalidArgumentException(sprintf('Data bukan instance dari DataInterface'), 100, null);
 		}
 		$this->dataClass = $dataClass;
+	}
+	
+	/**
+	 * Retrieve id dari report.
+	 * 
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	/**
+	 * Set id report.
+	 * Id ini harus diset oleh report-generator.
+	 * 
+	 * @param string $id
+	 */
+	public function setId($id) {
+		$this->id = $id;
 	}
 	
 	/**

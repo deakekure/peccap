@@ -150,6 +150,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 		
 		// Create report object.
 		$report = new Report($this->getDataClass());
+		$report->setId($this->getId());
 		$report->setDataProvider($this);
 		
 		// Populate seluruh strategy yang telah terdaftar ke dalam report object.
