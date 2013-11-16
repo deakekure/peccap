@@ -145,4 +145,12 @@ class Storage implements StorageInterface {
 		unset($this->sessionContainer->{$this->storageKey});
 		$this->cachedLoginContext = null;
 	}
+	
+	/**
+	 * 
+	 * @param number $time
+	 */
+	public function setRememberMe($time = 1209600) {
+		$this->sessionContainer->getManager()->rememberMe($time);
+	}
 }
