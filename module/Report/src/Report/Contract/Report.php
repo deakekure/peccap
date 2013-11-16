@@ -22,6 +22,13 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	private $dataClass;
 	
 	/**
+	 * Report parameter
+	 * 
+	 * @var Parameter
+	 */
+	private $parameter;
+	
+	/**
 	 * @var DataProviderInterface
 	 */
 	private $dataProvider;
@@ -78,12 +85,31 @@ class Report implements ReportInterface, StrategyHolderInterface {
 	
 	/**
 	 * (non-PHPdoc)
+	 * @see \Report\Contract\ReportInterface::getParameter()
+	 */
+	public function getParameter() {
+		return $this->parameter;
+	}
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Contract\ReportInterface::setParameter()
+	 */
+	public function setParameter(Parameter $parameter) {
+		$this->parameter = $parameter;
+		
+		/* @var $strategy StrategyInterface */
+		foreach ($this->strategies as $strategy) {
+			$strategy->setParameter($parameter);
+		}
+	}
+	
+	/**
+	 * (non-PHPdoc)
 	 * @see \Report\Contract\ReportInterface::getDataProvider()
 	 */
 	public function getDataProvider() {
 		return $this->dataProvider;
 	}
-	
 	/**
 	 * (non-PHPdoc)
 	 * @see \Report\Contract\ReportInterface::setDataProvider()
@@ -110,6 +136,9 @@ class Report implements ReportInterface, StrategyHolderInterface {
 		
 		if($this->dataProvider !== null) {
 			$strategy->setDataProvider($this->dataProvider);
+		}
+		if($this->parameter !== null) {
+			$strategy->setParameter($this->parameter);
 		}
 		$this->strategies[$name] = $strategy;
 	}

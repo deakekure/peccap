@@ -7,6 +7,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Report\Contract\GeneratorInterface;
 use Report\Contract\Report;
 use Report\Generator\Service\GeneratorManagerInterface;
+use Zend\ServiceManager\AbstractPluginManager;
+use Report\Contract\Parameter;
 
 /**
  * Kontrak untuk report view helper.
@@ -30,14 +32,29 @@ abstract class AbstractReportRenderer extends AbstractHelper implements ServiceL
 	private $serviceLocator;
 	
 	/**
+	 * Private biar child class hanya akses dari getter method.
+	 * 
+	 * @var GeneratorManagerInterface
+	 */
+	private $reportGeneratorManager;
+	
+	/**
 	 * Apakah view helper dapat merender report dengan id yang diberikan.
 	 * 
 	 * @param string $reportId
 	 */
-	public function canRender($reportId) {
+	public function canRender($reportId, $useDefaultParameter = false) {
+		$parameter = null;
+		if($useDefaultParameter) {
+			$parameter = $this->getReportGeneratorManager()->getDefaultParameter();
+		}
+		else {
+			$parameter = $this->getReportGeneratorManager()->getParameterStorage()->read();
+		}
+		
 		return $this->getReportGeneratorManager()
 			->getReportGenerator($reportId)
-			->canGenerate($this->getReportGeneratorManager()->getParameterStorage()->read());
+			->canGenerate($parameter);
 	}
 	
 	/**
@@ -45,14 +62,22 @@ abstract class AbstractReportRenderer extends AbstractHelper implements ServiceL
 	 * 
 	 * @param string $reportId
 	 */
-	public function render($reportId) {
-		if(!$this->canRender($reportId)) {
+	public function render($reportId, $useDefaultParameter = false) {
+		if(!$this->canRender($reportId, $useDefaultParameter)) {
 			throw new \RuntimeException('Tidak dapat merender report', 100, null);
+		}
+		
+		$parameter = null;
+		if($useDefaultParameter) {
+			$parameter = $this->getReportGeneratorManager()->getDefaultParameter();
+		}
+		else {
+			$parameter = $this->getReportGeneratorManager()->getParameterStorage()->read();
 		}
 		
 		/* @var $reportGenerator GeneratorInterface */
 		$reportGenerator = $this->getReportGeneratorManager()->getReportGenerator($reportId);
-		$this->doRender($reportGenerator);
+		return $this->doRender($reportGenerator, $parameter, $useDefaultParameter);
 	}
 	
 	/**
@@ -60,7 +85,7 @@ abstract class AbstractReportRenderer extends AbstractHelper implements ServiceL
 	 * 
 	 * @param GeneratorInterface $reportGenerator
 	 */
-	abstract protected function doRender(GeneratorInterface $reportGenerator);
+	abstract protected function doRender(GeneratorInterface $reportGenerator, Parameter $parameter, $isDefaultParameter);
 	
 	/**
 	 * Retrieve report generator manager.
@@ -68,8 +93,13 @@ abstract class AbstractReportRenderer extends AbstractHelper implements ServiceL
 	 * @return GeneratorManagerInterface
 	 */
 	protected function getReportGeneratorManager() {
+		$serviceLocator = $this->serviceLocator;
+		if($serviceLocator instanceof AbstractPluginManager) {
+			$serviceLocator = $serviceLocator->getServiceLocator();
+		}
+		
 		if($this->reportGeneratorManager === null) {
-			$this->reportGeneratorManager = $this->serviceLocator->get('ReportGeneratorManager');
+			$this->reportGeneratorManager = $serviceLocator->get('ReportGeneratorManager');
 		}
 		return $this->reportGeneratorManager;
 	}

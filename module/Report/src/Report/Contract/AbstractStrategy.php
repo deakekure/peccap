@@ -16,6 +16,13 @@ abstract class AbstractStrategy implements StrategyInterface {
 	protected $name;
 	
 	/**
+	 * Parameter yang digunakan dalam menggenerate report.
+	 * 
+	 * @var Parameter
+	 */
+	protected $parameter;
+	
+	/**
 	 * @var DataProviderInterface
 	 */
 	protected $dataProvider;
@@ -38,6 +45,21 @@ abstract class AbstractStrategy implements StrategyInterface {
 	 */
 	public function setName($name) {
 		$this->name = $name;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Contract\ReportInterface::getParameter()
+	 */
+	public function getParameter() {
+		return $this->parameter;
+	}
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Contract\ReportInterface::setParameter()
+	 */
+	public function setParameter(Parameter $parameter) {
+		$this->parameter = $parameter;
 	}
 	
 	/**

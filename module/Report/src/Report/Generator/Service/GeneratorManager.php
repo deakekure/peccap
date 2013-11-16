@@ -18,6 +18,9 @@ use Report\Parameter\Converter\DomainConverter;
 use Report\Parameter\Converter\CategoryConverter;
 use Report\Parameter\Converter\SourceConverter;
 use Report\Contract\AbstractGenerator;
+use Report\Contract\Parameter;
+use Application\Entity\Repository\AnnualPeriodRepository;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Implementasi default report service.
@@ -25,6 +28,13 @@ use Report\Contract\AbstractGenerator;
  * @author zakyalvan
  */
 class GeneratorManager extends AbstractPluginManager implements GeneratorManagerInterface, Initializable {
+	/**
+	 * Default parameter.
+	 * 
+	 * @var Parameter
+	 */
+	protected $defaultParameter;
+	
 	/**
 	 * @var ParameterStorage
 	 */
@@ -102,6 +112,50 @@ class GeneratorManager extends AbstractPluginManager implements GeneratorManager
 				$this->setService($key, $generator, false);
 			}
 		}
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \Report\Generator\Service\GeneratorManagerInterface::getDefaultParameter()
+	 */
+	public function getDefaultParameter() {
+		if($this->defaultParameter === null) {
+			$parameter = new Parameter();
+				
+			/* @var $entityManager EntityManager */
+			$entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
+				
+			/* @var $annualPeriodRepository AnnualPeriodRepository */
+			$annualPeriodRepository = $entityManager->getRepository('Application\Entity\AnnualPeriod');
+			$lastAnnualPeriods = $annualPeriodRepository->getLastPeriods(3);
+				
+			foreach ($lastAnnualPeriods as $annualPeriod) {
+				$parameter->getAnnualPeriods()->add($annualPeriod);
+			}
+				
+			$territories = $entityManager->getRepository('Application\Entity\Territory')->findAll();
+			foreach ($territories as $territory) {
+				$parameter->getTerritories()->add($territory);
+			}
+				
+			$domains = $entityManager->getRepository('Expenditure\Entity\Domain')->findAll();
+			foreach ($domains as $domain) {
+				$parameter->getDomains()->add($domain);
+			}
+				
+			$categories = $entityManager->getRepository('Expenditure\Entity\Category')->findAll();
+			foreach ($categories as $category) {
+				$parameter->getCategories()->add($category);
+			}
+				
+			$sources = $entityManager->getRepository('Income\Entity\Source')->findAll();
+			foreach ($sources as $source) {
+				$parameter->getSources()->add($source);
+			}
+				
+			$this->defaultParameter = $parameter;
+		}
+		return $this->defaultParameter;
 	}
 	
 	/**

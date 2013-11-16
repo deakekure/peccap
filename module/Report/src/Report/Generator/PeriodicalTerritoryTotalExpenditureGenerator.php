@@ -24,7 +24,7 @@ class PeriodicalTerritoryTotalExpenditureGenerator extends AbstractGenerator imp
 	 * @see \Report\Contract\AbstractGenerator::checkCanGenerate()
 	 */
 	protected function checkCanGenerate(Parameter $parameter) {
-		
+		return true;
 	}
 	/**
 	 * (non-PHPdoc)

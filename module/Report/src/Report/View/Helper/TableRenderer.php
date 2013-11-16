@@ -19,7 +19,7 @@ class TableRenderer extends AbstractReportRenderer {
 	 * (non-PHPdoc)
 	 * @see \Report\View\Helper\AbstractReportRenderer::doRender()
 	 */
-	protected function doRender(GeneratorInterface $reportGenerator) {
+	protected function doRender(GeneratorInterface $reportGenerator, $useDefaultParameter = false) {
 		
 	}
 }

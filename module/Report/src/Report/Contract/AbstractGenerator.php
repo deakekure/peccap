@@ -190,7 +190,7 @@ abstract class AbstractGenerator implements GeneratorInterface, DataProviderInte
 				null
 			);
 		}
-		
+		//return new ArrayCollection();
 		try {
 			$datas = $this->dataQuery->getResult();
 			

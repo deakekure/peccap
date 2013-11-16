@@ -8,6 +8,20 @@ namespace Report\Contract;
  */
 interface ReportInterface {
 	/**
+	 * Retrieve (kembali) parameter yang digunakan untuk menggenarate report.
+	 * 
+	 * @return Parameter
+	 */
+	public function getParameter();
+	
+	/**
+	 * Set parameter yang digunakan untuk menggenerate report.
+	 * 
+	 * @param Parameter $parameter
+	 */
+	public function setParameter(Parameter $parameter);
+	
+	/**
 	 * Retrieve report-data-provider.
 	 * 
 	 * @return DataProviderInterface
